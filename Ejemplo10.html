@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Repositorio Musical</title>
+	<style>
+		table,th,td{
+			border: 1px solid #0B01FD;
+			border-collapse: collapse;
+		}
+		th{
+			background-color: bisque;
+		}
+		#t1{
+			border: 0px #FFFFFF;
+		}
+		#t2{
+			border: 0px #FFFFFF;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="texto">
+		<h1 align="center">Repositorio musical</h1>
+		<br>
+		<br>
+		<table width="200" border="0" align="center" id="t1">
+		  <tbody>
+			<tr>
+			  <td align="center" id="t2"><button type="button" id="cargarXML">Abrir</button></td>
+			</tr>
+		  </tbody>
+		</table>
+		<br>
+		<br>
+	</div>
+	<table id="datos" border="1" align="center"></table>
+	<br>
+	<br>
+	<table id="datos2" border="1" align="center"></table>
+	<script>
+		document.getElementById("cargarXML").addEventListener("click",cargarXML);
+		function cargarXML(){
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function(){
+				if(this.readyState==4 && this.status==200){
+					mostrarArchivo(this);
+				}
+			};
+			xmlhttp.open("GET","Ejemplo9.xml",true);
+			xmlhttp.send();
+		}
+		function mostrarArchivo(xml){
+			var x,i,docXML,tabla,x2,tabla2,docXML2;
+			docXML=xml.responseXML;
+			tabla="<tr><th>ALBUM</th><th>LANZAMIENTO</th><th>DIRECTOR</th><th>ARTISTA</th><th>SENCILLO</th></tr>";
+			x=docXML.getElementsByTagName("album");
+			for(i=0;i<x.length;i++){
+				tabla+="<tr><td>";
+				tabla+=x[i].getElementsByTagName("nombre_a")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("fecha_lan")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("director")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("artista")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("sencillo")[0].textContent;
+				tabla+="</td></tr>";
+			}
+			document.getElementById("datos").innerHTML=tabla;
+			
+			docXML2=xml.responseXML;
+			tabla2="<tr><th>NOMBRE</th><th>DURACION</th><th>GENERO</th></tr>";
+			x=docXML.getElementsByTagName("sencillo");
+			for(i=0;i<x.length;i++){
+				tabla+="<tr><td>";
+				tabla+=x[i].getElementsByTagName("nombre_s")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("duracion")[0].textContent;
+				tabla+="</td><td>";
+				tabla+=x[i].getElementsByTagName("genero")[0].textContent;
+				tabla+="</td></tr>";
+			}
+			document.getElementById("datos2").innerHTML=tabla2;
+		}
+	</script>
+</body>
+</html>
